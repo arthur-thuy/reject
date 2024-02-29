@@ -8,9 +8,46 @@ Functionalities for classification with rejection.
 $ pip install reject
 ```
 
+## Documentation
+
+The documentation is deployed to [reject.readthedocs.io](http://reject.readthedocs.io/).
+
 ## Usage
 
-- TODO
+```python
+from reject.reject import ClassificationRejector
+
+y_pred  # Array of predictions. Shape (n_observations, n_classes) or (n_observations, n_samples, n_classes).
+y_true  # Array of true labels. Shape (n_observations,).
+
+# initialize the rejector
+rej = ClassificationRejector(y_true_all, y_pred_all)
+```
+```python
+# single rejection point
+rej.reject(threshold=0.5, unc_type="TU", relative=True, show=True)
+```
+```bash
+             Non-rejected    Rejected
+---------  --------------  ----------
+Correct               891          20
+Incorrect             109         980
+
+  Non-rejected accuracy    Classification quality    Rejection quality
+-----------------------  ------------------------  -------------------
+                 0.8910                    0.9355              40.9908
+```
+
+```python
+# rejection curve
+fig = rej.plot_reject(unc_type="TU", metric="NRA")
+print(fig)
+```
+
+<img src="https://github.com/arthur-thuy/reject/assets/57416568/6a59f37a-0f2f-4a2c-96d8-8690b8e19df7" height="200"/>
+
+An example notebook is provided, which can be found in the "Example usage" section of the documentation.
+
 
 ## Contributing
 
