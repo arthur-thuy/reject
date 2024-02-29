@@ -59,17 +59,4 @@ print(fig)
 
 <img src="https://github.com/arthur-thuy/reject/assets/57416568/6a59f37a-0f2f-4a2c-96d8-8690b8e19df7" height="200"/>
 
-An example notebook is provided, which can be found in the "Example usage" section of the documentation.
-
-
-## Contributing
-
-Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
-
-## License
-
-`reject` was created by Arthur Thuy. It is licensed under the terms of the Apache License 2.0 license.
-
-## Credits
-
-`reject` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
+An example notebook is provided, which can be found in the ["Example usage" section](https://reject.readthedocs.io/en/latest/example.html) of the documentation.
