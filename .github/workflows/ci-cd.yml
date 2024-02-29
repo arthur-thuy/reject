@@ -19,18 +19,14 @@ jobs:
 
     - name: Install poetry
       uses: snok/install-poetry@v1
+      with:
+        virtualenvs-in-project: true
 
     - name: Install package
       run: poetry install
 
     - name: Test with pytest
       run: poetry run pytest tests/ --cov=reject --cov-report=xml
-    
-    # - name: Use Codecov to track coverage
-    #   uses: codecov/codecov-action@v3
-    #   with:
-    #     files: ./coverage.xml   # coverage report
-    #     token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
