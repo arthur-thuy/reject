@@ -20,6 +20,7 @@ from reject.constant import (
     METRICS_DICT,
     ENTROPY_UNC_LIST,
     GENERAL_UNC_LIST,
+    UNCERTAINTIES_DICT
 )
 
 
@@ -58,6 +59,8 @@ def confusion_matrix(
         Number of incorrect observations that are rejected.
     n_incor_nonrej : int
         Number of incorrect observations that are not rejected.
+    pred_reject : ndarray
+        Array of True/False indicators to reject predictions.
     """
     # input checks
     if threshold < 0:
@@ -82,11 +85,12 @@ def confusion_matrix(
         idx = np.flip(idx, axis=0)
         idx_rej = idx[:n_preds_rej]
         idx_nonrej = idx[n_preds_rej:]
+        pred_reject = np.where(np.isin(np.arange(correct.size), idx_rej), True, False)
     else:
         # absolute rejection
-        y_reject = np.where(unc_ary >= threshold, 1, 0)
-        idx_rej = np.where(y_reject == 1)[0]
-        idx_nonrej = np.where(y_reject == 0)[0]
+        pred_reject = np.where(unc_ary >= threshold, True, False)
+        idx_rej = np.where(pred_reject == True)[0]
+        idx_nonrej = np.where(pred_reject == False)[0]
 
     # intersections
     idx_cor_rej = np.intersect1d(idx_correct, idx_rej)
@@ -108,7 +112,7 @@ def confusion_matrix(
                 headers="firstrow",
             )
         )
-    return n_cor_rej, n_cor_nonrej, n_incor_rej, n_incor_nonrej
+    return (n_cor_rej, n_cor_nonrej, n_incor_rej, n_incor_nonrej), pred_reject
 
 
 def compute_metrics(
@@ -116,9 +120,10 @@ def compute_metrics(
     correct: ArrayLike,
     unc_ary: ArrayLike,
     relative: bool = True,
+    return_bool: bool = True,
     show: bool = True,
     seed: int = 44,
-) -> tuple[float, float, float]:
+) -> tuple[tuple[float, float, float], NDArray]:
     """Compute 3 rejection metrics using relative or absolute threshold:
     - non-rejeced accuracy (NRA)
     - classification quality (CQ)
@@ -134,6 +139,8 @@ def compute_metrics(
         1D array of uncertainty values, largest value rejected first.
     relative : bool, optional
         Use relative rejection, otherwise absolute rejection, by default True
+    return_bool : bool, optional
+        Return boolean array of rejected predictions, by default True
     show : bool, optional
         Print confusion matrix to console, by default True
     seed: int, optional
@@ -147,6 +154,8 @@ def compute_metrics(
         Classification quality (CQ).
     rej_quality : float
         Rejection quality (RQ).
+    pred_reject : ndarray
+        Array of True/False indicators to reject predictions.
     Notes
     -----
     - rejection quality is undefined when `n_cor_rej=0`
@@ -154,7 +163,7 @@ def compute_metrics(
         - if no sample is rejected: RQ = 1
         - see: `Condessa et al. (2017) <https://doi.org/10.1016/j.patcog.2016.10.011>`_
     """
-    n_cor_rej, n_cor_nonrej, n_incor_rej, n_incor_nonrej = confusion_matrix(
+    (n_cor_rej, n_cor_nonrej, n_incor_rej, n_incor_nonrej), pred_reject = confusion_matrix(
         correct=correct,
         unc_ary=unc_ary,
         threshold=threshold,
@@ -200,7 +209,10 @@ def compute_metrics(
                 floatfmt=".4f",
             )
         )
-    return nonrej_acc, class_quality, rej_quality
+    if return_bool:
+        return (nonrej_acc, class_quality, rej_quality), pred_reject
+    else:
+        return (nonrej_acc, class_quality, rej_quality)
 
 
 class ClassificationRejector:
@@ -226,6 +238,7 @@ class ClassificationRejector:
         self.y_pred = y_pred
         self.seed = seed
         self.num_classes = y_pred.shape[-1]
+        self.max_entropy = np.log2(self.num_classes)
 
         # calculate uncertainty and correctness
         self._uncertainty = compute_uncertainty(y_pred)
@@ -253,9 +266,9 @@ class ClassificationRejector:
             If `unc_type` is invalid.
         """
         # checks
-        if unc_type not in ALL_UNC_LIST:
+        if unc_type is not None and unc_type not in ALL_UNC_LIST:
             raise ValueError(
-                "Invalid uncertainty type. Expected one of: TU, AU, EU, confidence"
+                "Invalid uncertainty type. Expected one of: TU, AU, EU, confidence or None"
             )
 
         if unc_type == "confidence":
@@ -264,10 +277,59 @@ class ClassificationRejector:
             return self._uncertainty[unc_type]
         else:
             return self._uncertainty
+        
+    def plot_uncertainty(
+        self,
+        unc_type: Optional[str] = None,
+        bins: int = 15,
+    ) -> plt.Figure:
+        """Plot uncertainty values.
+
+        Parameters
+        ----------
+        unc_type : Optional[str], optional
+            Uncertainty type to return. If None, dict of TU, AU, and EU is returned. By default None
+
+        Returns
+        -------
+        plt.Figure
+            Figure object.
+
+        Raises
+        ------
+        ValueError
+            If `unc_type` is invalid.
+        """
+        # checks
+        if unc_type is not None and unc_type not in ALL_UNC_LIST:
+            raise ValueError(
+                "Invalid uncertainty type. Expected one of: TU, AU, EU, confidence or None"
+            )
+        if unc_type == "confidence":
+            xlim = (0-0.05, 1+0.05)
+        else:
+            max_entropy = np.log2(self.num_classes) # TODO: use as attribute
+            xlim = (0-0.05*max_entropy, max_entropy+0.05*max_entropy)
+        
+        # draw plot
+        if unc_type is not None:
+            unc_enumerate = [unc_type]
+            fig, axes = plt.subplots(ncols=1, figsize=(4.5, 3))
+            axes = [axes]
+        else:
+            unc_enumerate = ENTROPY_UNC_LIST
+            fig, axes = plt.subplots(ncols=3, figsize=(16, 3))
+
+        for i, unc_type in enumerate(unc_enumerate):
+            axes[i].hist(self.uncertainty(unc_type), bins=bins)
+            axes[i].grid(linestyle="dashed")
+            axes[i].set(xlabel=UNCERTAINTIES_DICT[unc_type], ylabel="Frequency")
+            axes[i].set_xlim(xlim)
+        return fig
 
     def reject(
         self, threshold: float, unc_type: str, relative: bool = True, show: bool = False
-    ) -> tuple[float, float, float]:
+    ) -> tuple[tuple[float, float, float], NDArray]:
         """Reject with a single threshold.
 
         Parameters
@@ -304,7 +366,7 @@ class ClassificationRejector:
             seed=self.seed,
         )
 
-    def plot(
+    def plot_reject(
         self,
         unc_type: Optional[str] = None,
         metric: Optional[str] = None,
@@ -604,6 +666,7 @@ class ClassificationRejector:
             correct=correct,
             unc_ary=unc_ary,
             show=False,
+            return_bool=False,
             relative=relative,
             seed=self.seed,
         )
