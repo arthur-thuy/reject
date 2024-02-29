@@ -35,6 +35,11 @@ def compute_correct(y_true: ArrayLike, y_pred: ArrayLike) -> NDArray:
         If shape of `y_pred` or `y_true` is invalid.
     """
     # checks
+    if y_true.shape[0] != y_pred.shape[0]:
+        raise ValueError(
+            f"Number of observations in `y_true` and `y_pred` should match,\
+                got {y_true.shape[0]} and {y_pred.shape[0]}"
+        )
     if not y_pred.ndim in [1, 2, 3]:
         raise ValueError(
             f"`y_pred` should have rank 1, 2, or 3, has rank {y_pred.ndim}"
