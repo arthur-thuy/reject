@@ -1,5 +1,18 @@
 # reject
 
+<p align="center">
+<a href="https://pypi.org/project/reject/">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/reject">
+    </a>
+<img src="https://github.com/arthur-thuy/reject/actions/workflows/ci-cd.yml/badge.svg" />
+<a href='https://reject.readthedocs.io/en/latest/'>
+        <img src='https://img.shields.io/readthedocs/reject' alt='Documentation Status' />
+    </a>
+<a href="https://app.codecov.io/gh/arthur-thuy/reject" > 
+ <img src="https://codecov.io/gh/arthur-thuy/reject/graph/badge.svg?token=wYnaStSR3z"/> 
+ </a>
+</p>
+
 Functionalities for classification with rejection.
 
 ## Installation
