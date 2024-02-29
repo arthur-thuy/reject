@@ -621,4 +621,5 @@ class ClassificationRejector:
         if not relative and unc_type == "entropy":
             # invert x-axis, largest uncertainty values on the left
             ax.invert_xaxis()
+            ax.set_xlim(max_entropy+0.05*max_entropy, 0-0.05*max_entropy)
         return ax
