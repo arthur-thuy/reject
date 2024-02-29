@@ -81,7 +81,7 @@ def aggregate_preds(y_pred: ArrayLike) -> tuple[NDArray, NDArray, NDArray]:
 
 
 def generate_synthetic_output(
-    num_samples: int, num_observations: int, num_classes: int
+    num_samples: int, num_observations: int
 ) -> tuple[NDArray, NDArray]:
     """Generate synthetic NN output for showcasing functions.
 
@@ -91,20 +91,19 @@ def generate_synthetic_output(
         Number of samples to draw per observation.
     num_observations : int
         Number of observations.
-    num_classes : int
-        Number of classes.
 
     Returns
     -------
     tuple[NDArray, NDArray]
         Tuple of synthetic predictions and true labels.
     """
+    NUM_CLASSES = 10
     # example logit output
     logit_ary = [0.01, 0.01, 0.01, 0.4, 0.01, 0.01, 0.03, 0.01, 0.40, 0.11]
     assert np.isclose(np.sum(logit_ary), 1.0)
 
     # OOD
-    y_pred_ood = np.empty((num_observations, num_samples, num_classes))
+    y_pred_ood = np.empty((num_observations, num_samples, NUM_CLASSES))
     for i in range(num_observations):
         for j in range(num_samples):
             roll_idx = np.random.choice(
@@ -114,18 +113,18 @@ def generate_synthetic_output(
                 10, np.roll(logit_ary, roll_idx), size=1
             )
     y_pred_ood = softmax(y_pred_ood, axis=-1)
-    assert y_pred_ood.shape == (num_observations, num_samples, num_classes)
+    assert y_pred_ood.shape == (num_observations, num_samples, NUM_CLASSES)
 
     # ID
     id_ary = [0.01, 0.01, 0.01, 0.27, 0.01, 0.01, 0.02, 0.01, 0.40, 0.25]
     assert np.isclose(np.sum(id_ary), 1.0)
     y_pred_id = np.random.multinomial(10, id_ary, size=(num_observations, num_samples))
     y_pred_id = softmax(y_pred_id, axis=-1)
-    assert y_pred_id.shape == (num_observations, num_samples, num_classes)
+    assert y_pred_id.shape == (num_observations, num_samples, NUM_CLASSES)
 
     # concatenate preds
     y_pred_all = np.concatenate((y_pred_ood, y_pred_id), axis=0)
-    assert y_pred_all.shape == (2 * num_observations, num_samples, num_classes)
+    assert y_pred_all.shape == (2 * num_observations, num_samples, NUM_CLASSES)
 
     # true labels
     y_true_id = np.full((num_observations), 8)

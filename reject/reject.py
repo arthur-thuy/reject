@@ -20,7 +20,7 @@ from reject.constant import (
     METRICS_DICT,
     ENTROPY_UNC_LIST,
     GENERAL_UNC_LIST,
-    UNCERTAINTIES_DICT
+    UNCERTAINTIES_DICT,
 )
 
 
@@ -31,7 +31,7 @@ def confusion_matrix(
     relative: bool = True,
     show: bool = False,
     seed: int = 44,
-) -> tuple[int, int, int, int]:
+) -> tuple[tuple[int, int, int, int], NDArray]:
     """Compute confusion matrix with 2 axes: (i) correct/incorrect, (ii) rejected/non-rejected.
 
     Parameters
@@ -123,7 +123,7 @@ def compute_metrics(
     return_bool: bool = True,
     show: bool = True,
     seed: int = 44,
-) -> tuple[tuple[float, float, float], NDArray]:
+) -> Union[tuple[float, float, float], tuple[tuple[float, float, float], NDArray]]:
     """Compute 3 rejection metrics using relative or absolute threshold:
     - non-rejeced accuracy (NRA)
     - classification quality (CQ)
@@ -163,13 +163,15 @@ def compute_metrics(
         - if no sample is rejected: RQ = 1
         - see: `Condessa et al. (2017) <https://doi.org/10.1016/j.patcog.2016.10.011>`_
     """
-    (n_cor_rej, n_cor_nonrej, n_incor_rej, n_incor_nonrej), pred_reject = confusion_matrix(
-        correct=correct,
-        unc_ary=unc_ary,
-        threshold=threshold,
-        show=show,
-        relative=relative,
-        seed=seed,
+    (n_cor_rej, n_cor_nonrej, n_incor_rej, n_incor_nonrej), pred_reject = (
+        confusion_matrix(
+            correct=correct,
+            unc_ary=unc_ary,
+            threshold=threshold,
+            show=show,
+            relative=relative,
+            seed=seed,
+        )
     )
 
     # non-rejected accuracy
@@ -277,7 +279,7 @@ class ClassificationRejector:
             return self._uncertainty[unc_type]
         else:
             return self._uncertainty
-        
+
     def plot_uncertainty(
         self,
         unc_type: Optional[str] = None,
@@ -306,11 +308,11 @@ class ClassificationRejector:
                 "Invalid uncertainty type. Expected one of: TU, AU, EU, confidence or None"
             )
         if unc_type == "confidence":
-            xlim = (0-0.05, 1+0.05)
+            xlim = (0 - 0.05, 1 + 0.05)
         else:
-            max_entropy = np.log2(self.num_classes) # TODO: use as attribute
-            xlim = (0-0.05*max_entropy, max_entropy+0.05*max_entropy)
-        
+            max_entropy = np.log2(self.num_classes)  # TODO: use as attribute
+            xlim = (0 - 0.05 * max_entropy, max_entropy + 0.05 * max_entropy)
+
         # draw plot
         if unc_type is not None:
             unc_enumerate = [unc_type]
@@ -684,5 +686,5 @@ class ClassificationRejector:
         if not relative and unc_type == "entropy":
             # invert x-axis, largest uncertainty values on the left
             ax.invert_xaxis()
-            ax.set_xlim(max_entropy+0.05*max_entropy, 0-0.05*max_entropy)
+            ax.set_xlim(max_entropy + 0.05 * max_entropy, 0 - 0.05 * max_entropy)
         return ax
