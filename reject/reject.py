@@ -10,7 +10,7 @@ from typing import Optional, Union
 
 import numpy as np
 import matplotlib.pyplot as plt
-from numpy.typing import ArrayLike, NDArray
+from numpy.typing import NDArray
 from tabulate import tabulate
 
 from reject.uncertainty import compute_uncertainty, compute_confidence
@@ -25,8 +25,8 @@ from reject.constant import (
 
 
 def confusion_matrix(
-    correct: ArrayLike,
-    unc_ary: ArrayLike,
+    correct: NDArray,
+    unc_ary: NDArray,
     threshold: float,
     relative: bool = True,
     show: bool = False,
@@ -36,9 +36,9 @@ def confusion_matrix(
 
     Parameters
     ----------
-    correct : ArrayLike
+    correct : NDArray
         1D array of correct/incorrect indicators.
-    unc_ary : ArrayLike
+    unc_ary : NDArray
         1D array of uncertainty values, largest value rejected first.
     threshold : float
         Rejection threshold.
@@ -75,17 +75,19 @@ def confusion_matrix(
     # axis 1: rejected or non-rejected
     if relative:
         # relative rejection
-        n_preds_rej = int(threshold * correct.size)
+        n_preds_rej = int(threshold * correct.shape[0])
         # use uncertainty array
         # sort by unc_ary, then by random numbers random_draws
         # -> if values equal e.g. 1.0 -> rejected randomly
         np.random.seed(seed=seed)
-        random_draws = np.random.random(correct.size)
+        random_draws = np.random.random(correct.shape[0])
         idx = np.lexsort((random_draws, unc_ary))
         idx = np.flip(idx, axis=0)
         idx_rej = idx[:n_preds_rej]
         idx_nonrej = idx[n_preds_rej:]
-        pred_reject = np.where(np.isin(np.arange(correct.size), idx_rej), True, False)
+        pred_reject = np.where(
+            np.isin(np.arange(correct.shape[0]), idx_rej), True, False
+        )
     else:
         # absolute rejection
         pred_reject = np.where(unc_ary >= threshold, True, False)
@@ -117,8 +119,8 @@ def confusion_matrix(
 
 def compute_metrics(
     threshold: float,
-    correct: ArrayLike,
-    unc_ary: ArrayLike,
+    correct: NDArray,
+    unc_ary: NDArray,
     relative: bool = True,
     return_bool: bool = True,
     show: bool = True,
@@ -133,7 +135,7 @@ def compute_metrics(
     ----------
     threshold : float
         Rejection threshold.
-    correct : ArrayLike
+    correct : NDArray
         1D array of correct/incorrect indicator.
     unc_ary : ndarray
         1D array of uncertainty values, largest value rejected first.
@@ -220,17 +222,17 @@ def compute_metrics(
 class ClassificationRejector:
     def __init__(
         self,
-        y_true: ArrayLike,
-        y_pred: ArrayLike,
+        y_true: NDArray,
+        y_pred: NDArray,
         seed: int = 42,
     ):
         """Classification with rejection.
 
         Parameters
         ----------
-        y_true : ArrayLike
+        y_true : NDArray
             Array of true labels. Shape (n_observations,).
-        y_pred : ArrayLike
+        y_pred : NDArray
             Array of predictions. Shape (n_observations, n_classes)\
                     or (n_observations, n_samples, n_classes).
         seed : int, optional
@@ -249,7 +251,7 @@ class ClassificationRejector:
 
     def uncertainty(
         self, unc_type: Optional[str] = None
-    ) -> Union[NDArray, dict[NDArray, NDArray, NDArray]]:
+    ) -> Union[NDArray, dict[str, NDArray]]:
         """Get uncertainty or confidence values.
 
         Parameters
@@ -359,12 +361,14 @@ class ClassificationRejector:
         unc_ary = (
             self.confidence if unc_type == "confidence" else self._uncertainty[unc_type]
         )
-        return compute_metrics(
+        # NOTE: mypy think is can return tuple[float, float, float] but not true because `return_bool=True`
+        return compute_metrics(  # type: ignore[return-value]
             threshold=threshold,
             correct=self.correct,
             unc_ary=unc_ary,
             relative=relative,
             show=show,
+            return_bool=True,
             seed=self.seed,
         )
 
@@ -433,7 +437,7 @@ class ClassificationRejector:
                 filename=filename,
                 **save_args
             )
-        elif metric is None:
+        elif metric is None and unc_type is not None:
             fig = self.__plot_3_metric_panels(
                 unc_type=unc_type,
                 relative=relative,
@@ -586,8 +590,8 @@ class ClassificationRejector:
 
     def __plot_base_panel(
         self,
-        correct: ArrayLike,
-        unc_ary: ArrayLike,
+        correct: NDArray,
+        unc_ary: NDArray,
         metric: str,
         unc_type: str,
         relative: bool = True,
@@ -600,9 +604,9 @@ class ClassificationRejector:
 
         Parameters
         ----------
-        correct : ArrayLike
+        correct : NDArray
             Array of correct predictions. Shape (n_observations,).
-        unc_ary : ArrayLike
+        unc_ary : NDArray
             Array of uncertainty values, largest value rejected first.
         metric : str
             Rejection metric to compute.

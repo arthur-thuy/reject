@@ -9,7 +9,7 @@
 from typing import Optional, Union
 
 import numpy as np
-from numpy.typing import ArrayLike, NDArray
+from numpy.typing import NDArray
 from scipy.stats import entropy
 
 from reject.utils import aggregate_preds
@@ -17,12 +17,12 @@ from reject.constant import ENTROPY_UNC_LIST
 
 
 def compute_uncertainty(
-    y_pred: ArrayLike, unc_type: Optional[str] = None
-) -> Union[NDArray, tuple[NDArray, NDArray, NDArray]]:
+    y_pred: NDArray, unc_type: Optional[str] = None
+) -> Union[NDArray, dict[str, NDArray]]:
     """Calculate total uncertainty (TU), aleatoric uncertainty (AU) and epistemic uncertainty (EU).
     Parameters
     ----------
-    y_pred : ArrayLike
+    y_pred : NDArray
         Array of predictions. Shape (n_observations, n_classes)\
               or (n_observations, n_samples, n_classes).
     unc_type : Optional[str], optional
@@ -58,12 +58,12 @@ def compute_uncertainty(
         return unc_all
 
 
-def compute_confidence(y_pred) -> NDArray:
+def compute_confidence(y_pred: NDArray) -> NDArray:
     """Compute confidence.
 
     Parameters
     ----------
-    y_pred : ArrayLike
+    y_pred : NDArray
         Array of predictions. Shape (n_observations, n_classes)\
               or (n_observations, n_samples, n_classes).
 

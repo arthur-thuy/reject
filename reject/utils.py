@@ -9,18 +9,18 @@
 from typing import Optional, Union
 
 import numpy as np
-from numpy.typing import ArrayLike, NDArray
+from numpy.typing import NDArray
 from scipy.special import softmax
 
 
-def compute_correct(y_true: ArrayLike, y_pred: ArrayLike) -> NDArray:
+def compute_correct(y_true: NDArray, y_pred: NDArray) -> NDArray:
     """Compute correct predictions.
 
     Parameters
     ----------
-    y_true : ArrayLike
+    y_true : NDArray
         Array of true labels. Shape (n_observations,).
-    y_pred : ArrayLike
+    y_pred : NDArray
         Array of predictions. Shape (n_observations, n_classes)\
               or (n_observations, n_samples, n_classes).
 
@@ -54,11 +54,11 @@ def compute_correct(y_true: ArrayLike, y_pred: ArrayLike) -> NDArray:
     return is_correct
 
 
-def aggregate_preds(y_pred: ArrayLike) -> tuple[NDArray, NDArray, NDArray]:
+def aggregate_preds(y_pred: NDArray) -> tuple[NDArray, NDArray, NDArray]:
     """Aggregate predictions to get stack, mean, and label.
     Parameters
     ----------
-    y_pred : ArrayLike
+    y_pred : NDArray
         Array of predictions. Shape (n_observations, n_classes)\
               or (n_observations, n_samples, n_classes).
     Returns
