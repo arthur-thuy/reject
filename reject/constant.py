@@ -15,3 +15,9 @@ METRICS_DICT = {
 ENTROPY_UNC_LIST = ["TU", "AU", "EU"]
 ALL_UNC_LIST = ["TU", "AU", "EU", "confidence"]
 GENERAL_UNC_LIST = ["entropy", "confidence"]
+UNCERTAINTIES_DICT = {
+        "TU": "Total uncertainty",
+        "AU": "Aleatoric uncertainty",
+        "EU": "Epistemic uncertainty",
+        "confidence": "Confidence",
+    }
