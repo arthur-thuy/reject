@@ -16,7 +16,7 @@
     </a>
 </p>
 
-Functionalities for classification with rejection.
+`reject` is a Python library for _classification with rejection_. Neural networks are often confidently wrong when confronted with out-of-distribution data. When the prediction's uncertainty is too high, the model abstains from predicting and the observation is passed on to a human expert who takes the final decision. It is useful for applications where making an error can be more costly than asking a human expert for help.
 
 ## Installation
 
