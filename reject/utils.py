@@ -81,8 +81,10 @@ def aggregate_preds(y_pred: NDArray) -> tuple[NDArray, NDArray, NDArray]:
 
 
 def generate_synthetic_output(
-    num_samples: int, num_observations: int
-) -> tuple[NDArray, NDArray]:
+    num_samples: int, num_observations: int, concat: bool = True
+) -> Union[
+    tuple[NDArray, NDArray], tuple[tuple[NDArray, NDArray], tuple[NDArray, NDArray]]
+]:
     """Generate synthetic NN output for showcasing functions.
 
     Parameters
@@ -91,10 +93,12 @@ def generate_synthetic_output(
         Number of samples to draw per observation.
     num_observations : int
         Number of observations.
+    concat : bool, optional
+        Whether to concatenate ID and OOD samples, by default True.
 
     Returns
     -------
-    tuple[NDArray, NDArray]
+    Union[tuple[NDArray, NDArray], tuple[tuple[NDArray, NDArray], tuple[NDArray, NDArray]]]
         Tuple of synthetic predictions and true labels.
     """
     NUM_CLASSES = 10
@@ -132,4 +136,7 @@ def generate_synthetic_output(
     y_true_all = np.concatenate((y_true_ood, y_true_id), axis=0)
     assert y_true_all.shape == (2 * num_observations,)
 
-    return y_pred_all, y_true_all
+    if concat:
+        return y_pred_all, y_true_all
+    else:
+        return (y_pred_id, y_true_id), (y_pred_ood, y_true_ood)
