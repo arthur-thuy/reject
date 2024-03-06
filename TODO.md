@@ -10,6 +10,7 @@ Functionalities for classification with rejection.
 - [ ] Change sphinx theme
 - [ ] Inspect how sklearn creates plot ([here](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.PrecisionRecallDisplay.html#sklearn.metrics.PrecisionRecallDisplay.from_estimator))
 - [ ] Test code for a range of python versions
+- [ ] Update PyPi description to regular README
 
 ### In Progress
 
