@@ -161,6 +161,7 @@ def compute_metrics(
         Rejection quality (RQ).
     pred_reject : ndarray
         Array of True/False indicators to reject predictions.
+        
     Notes
     -----
     - rejection quality is undefined when `n_cor_rej=0`

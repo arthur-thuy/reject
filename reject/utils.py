@@ -56,11 +56,13 @@ def compute_correct(y_true: NDArray, y_pred: NDArray) -> NDArray:
 
 def aggregate_preds(y_pred: NDArray) -> tuple[NDArray, NDArray, NDArray]:
     """Aggregate predictions to get stack, mean, and label.
+
     Parameters
     ----------
     y_pred : NDArray
         Array of predictions. Shape (n_observations, n_classes)\
               or (n_observations, n_samples, n_classes).
+              
     Returns
     -------
     tuple[NDArray, NDArray, NDArray]

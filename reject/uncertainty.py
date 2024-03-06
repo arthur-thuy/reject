@@ -19,6 +19,7 @@ def compute_uncertainty(
       y_pred: NDArray, unc_type: Optional[EntropyUnc] = None  
 ) -> Union[NDArray, dict[str, NDArray]]:
     """Calculate total uncertainty (TU), aleatoric uncertainty (AU) and epistemic uncertainty (EU).
+
     Parameters
     ----------
     y_pred : NDArray
@@ -26,10 +27,12 @@ def compute_uncertainty(
               or (n_observations, n_samples, n_classes).
     unc_type : Unc_type, optional
         Type of uncertainty to compute (either TU, AU, or EU), by default None
+
     Returns
     -------
     Union[NDArray, tuple[NDArray, NDArray, NDArray]]
         Array of one uncertainty type, or all three uncertainty types.
+
     Raises
     ------
     ValueError

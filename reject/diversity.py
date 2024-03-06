@@ -7,7 +7,7 @@
 # =============================================================================
 
 import warnings
-from typing import Optional, Any
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray, ArrayLike
@@ -20,6 +20,7 @@ def compute_pairwise_diversity(
     base_member_label: NDArray,
 ) -> float:
     """Calculate diversity between two members of an ensemble.
+
     Parameters
     ----------
     other_member_label : NDArray
@@ -89,10 +90,12 @@ class UndefinedMetricWarning(UserWarning):
 
 def _input_array(a: ArrayLike) -> NDArray:
     """Convert input to numpy array.
+
     Parameters
     ----------
     a : ArrayLike
         Input array to convert
+
     Returns
     -------
     NDArray
@@ -112,6 +115,7 @@ def _diversity_quality_score_base(
     keepdims: bool = False,
 ) -> NDArray:
     """Compute Diversity Quality score based on diversity scores.
+
     Parameters
     ----------
     diversity_id : ArrayLike
@@ -124,6 +128,7 @@ def _diversity_quality_score_base(
         How to handle division by zero {"warn", 0.0, np.nan}, by default "warn"
     keepdims : bool, optional
         If True, the output will keep the same dimensions as the input, by default False
+
     Returns
     -------
     NDArray
@@ -153,6 +158,7 @@ def diversity_score(
     keepdims: bool = False,
 ) -> ArrayLike:
     """Compute diversity score in some prediction.
+
     Parameters
     ----------
     y_pred : ArrayLike
@@ -161,6 +167,7 @@ def diversity_score(
         Whether to average over the ensemble members, by default False
     keepdims : bool, optional
         Whether to keep the output dimensions, by default False
+
     Returns
     -------
     ArrayLike
@@ -194,6 +201,7 @@ def diversity_quality_score(
     keepdims: bool = False,
 ) -> ArrayLike:
     """Compute Diversity Quality score based on output predictions.
+
     Parameters
     ----------
     y_pred_id : ArrayLike
@@ -208,6 +216,7 @@ def diversity_quality_score(
         How to handle division by zero {"warn", 0.0, np.nan}, by default "warn"
     keepdims : bool, optional
         Whether to keep the output dimensions, by default False
+
     Returns
     -------
     ArrayLike
