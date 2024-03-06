@@ -19,8 +19,6 @@ jobs:
 
     - name: Install poetry
       uses: snok/install-poetry@v1
-      with:
-        virtualenvs-in-project: true
 
     - name: Install package
       run: poetry install
