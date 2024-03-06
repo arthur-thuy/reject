@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "reject"
-version = "0.2.0"
+version = "0.3.0"
 description = "Functionalities for classification with rejection."
 authors = ["Arthur Thuy"]
 maintainers = ["Arthur Thuy <arthur.thuy@telenet.be>"]
