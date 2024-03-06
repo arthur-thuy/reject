@@ -14,4 +14,5 @@ Functionalities for classification with rejection.
 
 
 ### Done ✓
+- [x] Use Literal types in type hints
 - [x] Use codecov
