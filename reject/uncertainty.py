@@ -6,18 +6,17 @@
 """Module for uncertainty."""
 # =============================================================================
 
-from typing import Optional, Union
+from typing import Optional, Union, Literal
 
 import numpy as np
 from numpy.typing import NDArray
 from scipy.stats import entropy
 
 from reject.utils import aggregate_preds
-from reject.constant import ENTROPY_UNC_LIST
-
+from reject.constant import ENTROPY_UNC_LIST, EntropyUnc
 
 def compute_uncertainty(
-    y_pred: NDArray, unc_type: Optional[str] = None
+      y_pred: NDArray, unc_type: Optional[EntropyUnc] = None  
 ) -> Union[NDArray, dict[str, NDArray]]:
     """Calculate total uncertainty (TU), aleatoric uncertainty (AU) and epistemic uncertainty (EU).
     Parameters
@@ -25,7 +24,7 @@ def compute_uncertainty(
     y_pred : NDArray
         Array of predictions. Shape (n_observations, n_classes)\
               or (n_observations, n_samples, n_classes).
-    unc_type : Optional[str], optional
+    unc_type : Unc_type, optional
         Type of uncertainty to compute (either TU, AU, or EU), by default None
     Returns
     -------

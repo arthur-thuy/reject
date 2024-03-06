@@ -6,7 +6,7 @@
 """Module for rejection."""
 # =============================================================================
 
-from typing import Optional, Union
+from typing import Optional, Union, Literal
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -21,6 +21,9 @@ from reject.constant import (
     ENTROPY_UNC_LIST,
     GENERAL_UNC_LIST,
     UNCERTAINTIES_DICT,
+    AllUnc,
+    GeneralUnc,
+    Metric,
 )
 
 
@@ -250,13 +253,13 @@ class ClassificationRejector:
         self.correct = compute_correct(y_true, y_pred)
 
     def uncertainty(
-        self, unc_type: Optional[str] = None
+        self, unc_type: Optional[AllUnc] = None
     ) -> Union[NDArray, dict[str, NDArray]]:
         """Get uncertainty or confidence values.
 
         Parameters
         ----------
-        unc_type : Optional[str], optional
+        unc_type : Optional[AllUnc], optional
             Uncertainty type to return. If None, dict of TU, AU, and EU is returned. By default None
 
         Returns
@@ -284,14 +287,14 @@ class ClassificationRejector:
 
     def plot_uncertainty(
         self,
-        unc_type: Optional[str] = None,
+        unc_type: Optional[AllUnc] = None,
         bins: int = 15,
     ) -> plt.Figure:
         """Plot uncertainty values.
 
         Parameters
         ----------
-        unc_type : Optional[str], optional
+        unc_type : Optional[AllUnc], optional
             Uncertainty type to return. If None, dict of TU, AU, and EU is returned. By default None
 
         Returns
@@ -312,8 +315,7 @@ class ClassificationRejector:
         if unc_type == "confidence":
             xlim = (0 - 0.05, 1 + 0.05)
         else:
-            max_entropy = np.log2(self.num_classes)  # TODO: use as attribute
-            xlim = (0 - 0.05 * max_entropy, max_entropy + 0.05 * max_entropy)
+            xlim = (0 - 0.05 * self.max_entropy, self.max_entropy + 0.05 * self.max_entropy)
 
         # draw plot
         if unc_type is not None:
@@ -321,7 +323,7 @@ class ClassificationRejector:
             fig, axes = plt.subplots(ncols=1, figsize=(4.5, 3))
             axes = [axes]
         else:
-            unc_enumerate = ENTROPY_UNC_LIST
+            unc_enumerate = ENTROPY_UNC_LIST  # type: ignore
             fig, axes = plt.subplots(ncols=3, figsize=(16, 3))
 
         for i, unc_type in enumerate(unc_enumerate):
@@ -332,7 +334,11 @@ class ClassificationRejector:
         return fig
 
     def reject(
-        self, threshold: float, unc_type: str, relative: bool = True, show: bool = False
+        self,
+        threshold: float,
+        unc_type: AllUnc,
+        relative: bool = True,
+        show: bool = False,
     ) -> tuple[tuple[float, float, float], NDArray]:
         """Reject with a single threshold.
 
@@ -340,7 +346,7 @@ class ClassificationRejector:
         ----------
         threshold : float
             Rejection threshold.
-        unc_type : str
+        unc_type : AllUnc
             Uncertainty type to use for rejection order.
         relative : bool, optional
             Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
@@ -374,8 +380,8 @@ class ClassificationRejector:
 
     def plot_reject(
         self,
-        unc_type: Optional[str] = None,
-        metric: Optional[str] = None,
+        unc_type: Optional[AllUnc] = None,
+        metric: Optional[Metric] = None,
         relative: bool = True,
         space_start: float = 0.001,
         space_stop: float = 0.99,
@@ -388,9 +394,9 @@ class ClassificationRejector:
 
         Parameters
         ----------
-        unc_type : Optional[str], optional
+        unc_type : Optional[AllUnc], optional # TODO: update to AllUnc
             Uncertainty type to use for rejection order. If None, 3 panels with TU, AU, and EU are plotted. By default None
-        metric : Optional[str], optional
+        metric : Optional[Metric], optional
             Rejection metrics to compute. If None, 3 panels with NRA, CQ, and RQ are plotted. By default None
         relative : bool, optional
             Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
@@ -420,10 +426,9 @@ class ClassificationRejector:
             raise ValueError(
                 "`unc_type` and `metric` cannot be both None, at least one must be specified."
             )
-        unc_types = ["TU", "AU", "EU", "confidence"]
-        if unc_type is not None and unc_type not in unc_types:
+        if unc_type is not None and unc_type not in ALL_UNC_LIST:
             raise ValueError(
-                "Invalid uncertainty type. Expected one of: %s" % unc_types
+                "Invalid uncertainty type. Expected one of: %s" % ALL_UNC_LIST
             )
 
         if metric is not None:
@@ -451,8 +456,8 @@ class ClassificationRejector:
 
     def __plot_1_3_uncertainty_panels(
         self,
-        metric: str,
-        unc_type: Optional[str] = None,
+        metric: Metric,
+        unc_type: Optional[AllUnc] = None,
         relative: bool = True,
         space_start: float = 0.001,
         space_stop: float = 0.99,
@@ -464,9 +469,9 @@ class ClassificationRejector:
 
         Parameters
         ----------
-        metric : str
+        metric : Metric
             Rejection metrics to compute.
-        unc_type : Optional[str], optional
+        unc_type : Optional[AllUnc], optional
             Uncertainty type to use for rejection order. If None, 3 panels with TU, AU, and EU are plotted. By default None
         relative : bool, optional
             Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
@@ -490,7 +495,7 @@ class ClassificationRejector:
             fig, axes = plt.subplots(ncols=1, figsize=(4.5, 3))
             axes = [axes]
         else:
-            unc_enumerate = ENTROPY_UNC_LIST
+            unc_enumerate = ENTROPY_UNC_LIST  # type: ignore
             fig, axes = plt.subplots(ncols=3, figsize=(16, 3))
 
         for i, unc_type in enumerate(unc_enumerate):
@@ -506,7 +511,7 @@ class ClassificationRejector:
                 correct=self.correct,
                 unc_ary=unc_ary,
                 metric=metric,
-                unc_type="confidence" if unc_type == "confidence" else "entropy",
+                unc_type=GeneralUnc.CONFIDENCE if unc_type == "confidence" else GeneralUnc.ENTROPY,
                 relative=relative,
                 space_start=space_start,
                 space_stop=space_stop,
@@ -526,7 +531,7 @@ class ClassificationRejector:
 
     def __plot_3_metric_panels(
         self,
-        unc_type: str,
+        unc_type: AllUnc,
         relative: bool = True,
         space_start: float = 0.001,
         space_stop: float = 0.99,
@@ -538,7 +543,7 @@ class ClassificationRejector:
 
         Parameters
         ----------
-        unc_type : str
+        unc_type : AllUnc
             Uncertainty type to use for rejection order.
         relative : bool, optional
             Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
@@ -565,12 +570,12 @@ class ClassificationRejector:
 
         # draw plot
         fig, axes = plt.subplots(ncols=3, figsize=(16, 3))
-        for i, label in enumerate(METRICS_DICT.keys()):
+        for i, label in enumerate(Metric):
             self.__plot_base_panel(
                 correct=self.correct,
                 unc_ary=unc_ary,
                 metric=label,
-                unc_type="confidence" if unc_type == "confidence" else "entropy",
+                unc_type=GeneralUnc.CONFIDENCE if unc_type == "confidence" else GeneralUnc.ENTROPY,
                 relative=relative,
                 space_start=space_start,
                 space_stop=space_stop,
@@ -592,8 +597,8 @@ class ClassificationRejector:
         self,
         correct: NDArray,
         unc_ary: NDArray,
-        metric: str,
-        unc_type: str,
+        metric: Metric,
+        unc_type: GeneralUnc,
         relative: bool = True,
         space_start: float = 0.001,
         space_stop: float = 0.99,
@@ -608,9 +613,9 @@ class ClassificationRejector:
             Array of correct predictions. Shape (n_observations,).
         unc_ary : NDArray
             Array of uncertainty values, largest value rejected first.
-        metric : str
+        metric : Metric
             Rejection metric to compute.
-        unc_type : str
+        unc_type : GeneralUnc
             Uncertainty type to use for rejection order.
         relative : bool, optional
             Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
@@ -654,10 +659,9 @@ class ClassificationRejector:
             reject_ary = treshold_ary
             plot_ary = np.flip(treshold_ary, axis=0)
         elif not relative and unc_type == "entropy":
-            max_entropy = np.log2(self.num_classes)
             treshold_ary = np.linspace(
-                start=(1 - space_start) * max_entropy,
-                stop=(1 - space_stop) * max_entropy,
+                start=(1 - space_start) * self.max_entropy,
+                stop=(1 - space_stop) * self.max_entropy,
                 num=space_bins,
             )
             reject_ary = treshold_ary
@@ -690,5 +694,5 @@ class ClassificationRejector:
         if not relative and unc_type == "entropy":
             # invert x-axis, largest uncertainty values on the left
             ax.invert_xaxis()
-            ax.set_xlim(max_entropy + 0.05 * max_entropy, 0 - 0.05 * max_entropy)
+            ax.set_xlim(self.max_entropy + 0.05 * self.max_entropy, 0 - 0.05 * self.max_entropy)
         return ax
