@@ -1,4 +1,5 @@
 format:
+	isort reject/ --profile black
 	black reject/
 
 mypy:
