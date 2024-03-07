@@ -1,3 +1,5 @@
+"""Functionalities for classification with rejection."""
+
 # read version from installed package
 from importlib.metadata import version
 

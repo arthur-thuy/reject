@@ -38,7 +38,8 @@ def compute_pairwise_diversity(
 
 
 def _dq_divide(numerator, denominator, zero_division="warn"):
-    """Performs division and handles divide-by-zero.
+    """Perform division and handles divide-by-zero.
+
     On zero-division, sets the corresponding result elements equal to
     0 or np.nan (according to ``zero_division``). Plus, if
     ``zero_division != "warn"`` raises a warning.
@@ -85,7 +86,7 @@ def _check_zero_division(zero_division):
 
 
 class UndefinedMetricWarning(UserWarning):
-    """Warning used when the metric is invalid"""
+    """Warning used when the metric is invalid."""
 
 
 def _input_array(a: ArrayLike) -> NDArray:

@@ -34,8 +34,9 @@ def confusion_matrix(
     relative: bool = True,
     show: bool = False,
 ) -> tuple[tuple[int, int, int, int], NDArray]:
-    """Compute confusion matrix with 2 axes:
-    (i) correct/incorrect, (ii) rejected/non-rejected.
+    """Compute confusion matrix.
+
+    Confusion matrix with 2 axes: (i) correct/incorrect, (ii) rejected/non-rejected.
 
     Parameters
     ----------
@@ -125,10 +126,12 @@ def compute_metrics(
     return_bool: bool = True,
     show: bool = True,
 ) -> Union[tuple[float, float, float], tuple[tuple[float, float, float], NDArray]]:
-    """Compute 3 rejection metrics using relative or absolute threshold:
-    - non-rejeced accuracy (NRA)
-    - classification quality (CQ)
-    - rejection quality (RQ)
+    """Compute 3 rejection metrics using relative or absolute threshold.
+
+    | 3 rejection metrics:
+    | - non-rejeced accuracy (NRA)
+    | - classification quality (CQ)
+    | - rejection quality (RQ)
 
     Parameters
     ----------
@@ -217,6 +220,8 @@ def compute_metrics(
 
 
 class ClassificationRejector:
+    """Classification with rejection."""
+
     def __init__(
         self,
         y_true: NDArray,
@@ -387,8 +392,9 @@ class ClassificationRejector:
         filename: Optional[str] = None,
         **save_args
     ) -> plt.Figure:
-        """Plot one or multiple rejection metrics for a range of thresholds,
-         based on one or more uncertainty types.\
+        """Plot one or multiple rejection metrics for a range of thresholds.
+
+        Rejection can be based on one or more uncertainty types.
         There should be at least one of `unc_type` or `metric` specified.
 
         Parameters

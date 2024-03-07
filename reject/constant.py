@@ -26,17 +26,23 @@ UNCERTAINTIES_DICT = {
 
 
 class EntropyUnc(str, Enum):
+    """Entropy-based uncertainty types."""
+
     TU = "TU"
     AU = "AU"
     EU = "EU"
 
 
 class GeneralUnc(str, Enum):
+    """General uncertainty types."""
+
     ENTROPY = "entropy"
     CONFIDENCE = "confidence"
 
 
 class AllUnc(str, Enum):
+    """All uncertainty types."""
+
     TU = "TU"
     AU = "AU"
     EU = "EU"
@@ -44,6 +50,8 @@ class AllUnc(str, Enum):
 
 
 class Metric(str, Enum):
+    """Rejection metrics."""
+
     NRA = "NRA"
     CQ = "CQ"
     RQ = "RQ"

@@ -22,3 +22,15 @@ repos:
     hooks:
       - id: isort
         args: ["--profile", "black", "--filter-files"]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        additional_dependencies: [
+            'flake8-docstrings',
+            'flake8-bugbear',
+            'flake8-implicit-str-concat',
+            'pydocstyle>=5.0.0',
+        ]
+        exclude: (tests/|docs/conf.py)

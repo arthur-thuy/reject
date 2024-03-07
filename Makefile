@@ -9,4 +9,5 @@ test:
 	pytest tests/ --cov=reject
 
 lint:
+	pydocstyle reject/
 	flake8 reject/ tests/
