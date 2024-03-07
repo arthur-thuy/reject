@@ -33,7 +33,6 @@ def confusion_matrix(
     threshold: float,
     relative: bool = True,
     show: bool = False,
-    seed: int = 44,
 ) -> tuple[tuple[int, int, int, int], NDArray]:
     """Compute confusion matrix with 2 axes:
     (i) correct/incorrect, (ii) rejected/non-rejected.
@@ -50,8 +49,6 @@ def confusion_matrix(
         Use relative rejection, otherwise absolute rejection, by default True
     show : bool, optional
         Print confusion matrix to console, by default False
-    seed: int, optional
-        Seed value for random rejection, by default 42
 
     Returns
     -------
@@ -83,7 +80,6 @@ def confusion_matrix(
         # use uncertainty array
         # sort by unc_ary, then by random numbers random_draws
         # -> if values equal e.g. 1.0 -> rejected randomly
-        np.random.seed(seed=seed)
         random_draws = np.random.random(correct.shape[0])
         idx = np.lexsort((random_draws, unc_ary))
         idx = np.flip(idx, axis=0)
@@ -128,7 +124,6 @@ def compute_metrics(
     relative: bool = True,
     return_bool: bool = True,
     show: bool = True,
-    seed: int = 44,
 ) -> Union[tuple[float, float, float], tuple[tuple[float, float, float], NDArray]]:
     """Compute 3 rejection metrics using relative or absolute threshold:
     - non-rejeced accuracy (NRA)
@@ -149,8 +144,6 @@ def compute_metrics(
         Return boolean array of rejected predictions, by default True
     show : bool, optional
         Print confusion matrix to console, by default True
-    seed: int, optional
-        Seed value for random rejection, by default 42
 
     Returns
     -------
@@ -177,7 +170,6 @@ def compute_metrics(
             threshold=threshold,
             show=show,
             relative=relative,
-            seed=seed,
         )
     )
 
@@ -229,7 +221,6 @@ class ClassificationRejector:
         self,
         y_true: NDArray,
         y_pred: NDArray,
-        seed: int = 42,
     ):
         """Classification with rejection.
 
@@ -240,12 +231,9 @@ class ClassificationRejector:
         y_pred : NDArray
             Array of predictions. Shape (n_observations, n_classes)\
                     or (n_observations, n_samples, n_classes).
-        seed : int, optional
-            Seed value for random rejection, by default 42
         """
         self.y_true = y_true
         self.y_pred = y_pred
-        self.seed = seed
         self.num_classes = y_pred.shape[-1]
         self.max_entropy = np.log2(self.num_classes)
 
@@ -386,7 +374,6 @@ class ClassificationRejector:
             relative=relative,
             show=show,
             return_bool=True,
-            seed=self.seed,
         )
 
     def plot_reject(
@@ -697,7 +684,7 @@ class ClassificationRejector:
 
         compute_metrics_rej_v = np.vectorize(
             compute_metrics,
-            excluded=["correct", "unc_ary", "show", "relative", "seed"],
+            excluded=["correct", "unc_ary", "show", "relative"],
         )
         nonrej_acc, class_quality, rej_quality = compute_metrics_rej_v(
             reject_ary,
@@ -706,7 +693,6 @@ class ClassificationRejector:
             show=False,
             return_bool=False,
             relative=relative,
-            seed=self.seed,
         )
 
         # plot on existing axis or new axis
