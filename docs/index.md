@@ -45,5 +45,4 @@ guide/diversity_quality_score.ipynb
 
 changelog.md
 contributing.md
-conduct.md
 ```
