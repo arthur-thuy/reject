@@ -2,3 +2,4 @@
 max-line-length = 80
 extend-select = B950
 extend-ignore = E203,E501,E701
+; source: https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#bugbear
