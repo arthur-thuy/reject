@@ -95,8 +95,8 @@ def confusion_matrix(
     else:
         # absolute rejection
         pred_reject = np.where(unc_ary >= threshold, True, False)
-        idx_rej = np.where(pred_reject is True)[0]
-        idx_nonrej = np.where(pred_reject is False)[0]
+        idx_rej = np.where(pred_reject == True)[0]  # noqa
+        idx_nonrej = np.where(pred_reject == False)[0]  # noqa
 
     # intersections
     idx_cor_rej = np.intersect1d(idx_correct, idx_rej)

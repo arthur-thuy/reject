@@ -68,15 +68,18 @@ class TestComputeUncertainty:
     def test_unit(self, y_pred, unc_tuple):
         actual_unc_all = compute_uncertainty(y_pred, unc_type=None)
         print(actual_unc_all)
-        assert actual_unc_all["TU"] == pytest.approx(
-            unc_tuple[0]
-        ), f"Total uncertainty should be {float(unc_tuple[0][0])}, is {float(actual_unc_all['TU'][0])}."
-        assert actual_unc_all["AU"] == pytest.approx(
-            unc_tuple[1]
-        ), f"Aleatoric uncertainty should be {float(unc_tuple[1][0])}, is {float(actual_unc_all['AU'][0])}."
-        assert actual_unc_all["EU"] == pytest.approx(
-            unc_tuple[2]
-        ), f"Epistemic uncertainty should be {float(unc_tuple[2][0])}, is {float(actual_unc_all['EU'][0])}."
+        assert actual_unc_all["TU"] == pytest.approx(unc_tuple[0]), (
+            f"Total uncertainty should be {float(unc_tuple[0][0])},"
+            f" is {float(actual_unc_all['TU'][0])}."
+        )
+        assert actual_unc_all["AU"] == pytest.approx(unc_tuple[1]), (
+            f"Aleatoric uncertainty should be {float(unc_tuple[1][0])},"
+            f" is {float(actual_unc_all['AU'][0])}."
+        )
+        assert actual_unc_all["EU"] == pytest.approx(unc_tuple[2]), (
+            f"Epistemic uncertainty should be {float(unc_tuple[2][0])},"
+            f" is {float(actual_unc_all['EU'][0])}."
+        )
 
     def test_error(self):
         with pytest.raises(ValueError):

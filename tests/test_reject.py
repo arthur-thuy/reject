@@ -52,30 +52,12 @@ class TestConfusionMatrix:
         ],
     )
     def test_unit(self, correct, unc_ary, threshold, relative, matrix_rej):
-        (
-            actual_n_cor_rej,
-            actual_n_cor_nonrej,
-            actual_n_incor_rej,
-            actual_n_incor_nonrej,
-        ), _ = confusion_matrix(correct, unc_ary, threshold, relative=relative)
-        (
-            expected_n_cor_rej,
-            expected_n_cor_nonrej,
-            expected_n_incor_rej,
-            expected_n_incor_nonrej,
-        ) = matrix_rej
+        actual_matrix, _ = confusion_matrix(
+            correct, unc_ary, threshold, relative=relative
+        )
         assert (
-            actual_n_cor_rej == expected_n_cor_rej
-        ), f"`n_cor_rej` should be {expected_n_cor_rej}, is {actual_n_cor_rej}."
-        assert (
-            actual_n_cor_nonrej == expected_n_cor_nonrej
-        ), f"`n_cor_nonrej` should be {expected_n_cor_nonrej}, is {actual_n_cor_nonrej}."
-        assert (
-            actual_n_incor_rej == expected_n_incor_rej
-        ), f"`n_incor_rej` should be {expected_n_incor_rej}, is {actual_n_incor_rej}."
-        assert (
-            actual_n_incor_nonrej == expected_n_incor_nonrej
-        ), f"`n_incor_nonrej` should be {expected_n_incor_nonrej}, is {actual_n_incor_nonrej}."
+            actual_matrix == matrix_rej
+        ), f"Matrix should be {matrix_rej}, is {actual_matrix}."
 
     def test_error(self, correct, unc_ary):
         with pytest.raises(ValueError):
@@ -104,17 +86,20 @@ class TestComputeMetricsRej:
         np.testing.assert_allclose(
             actual_nonrej_acc,
             expected_nonrej_acc,
-            err_msg=f"`nonrej_acc` should be {expected_nonrej_acc}, is {actual_nonrej_acc}.",
+            err_msg=f"`nonrej_acc` should be {expected_nonrej_acc},"
+            f" is {actual_nonrej_acc}.",
         )
         np.testing.assert_allclose(
             actual_class_quality,
             expected_class_quality,
-            err_msg=f"`class_quality` should be {expected_class_quality}, is {actual_class_quality}.",
+            err_msg=f"`class_quality` should be {expected_class_quality},"
+            f" is {actual_class_quality}.",
         )
         np.testing.assert_allclose(
             actual_rej_quality,
             expected_rej_quality,
-            err_msg=f"`rej_quality` should be {expected_rej_quality}, is {actual_rej_quality}.",
+            err_msg=f"`rej_quality` should be {expected_rej_quality},"
+            f" is {actual_rej_quality}.",
         )
 
     def test_unit_edge_nra(self):
@@ -177,9 +162,10 @@ class TestClassificationRejector:
         assert (
             rej.num_classes == num_classes
         ), f"Number of classes should be {num_classes}, is {rej.num_classes}."
-        assert rej.max_entropy == np.log2(
-            rej.num_classes
-        ), f"Max entropy should be {np.log2(num_classes) = :.2f}, is {rej.max_entropy:.2f}."
+        assert rej.max_entropy == np.log2(rej.num_classes), (
+            f"Max entropy should be {np.log2(num_classes) = :.2f},"
+            f"is {rej.max_entropy:.2f}."
+        )
 
     @pytest.mark.parametrize(
         "unc_type, return_type",

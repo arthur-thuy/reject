@@ -6,7 +6,7 @@
 """Module for utils."""
 # =============================================================================
 
-from typing import Optional, Union
+from typing import Union
 
 import numpy as np
 from numpy.typing import NDArray
@@ -40,7 +40,7 @@ def compute_correct(y_true: NDArray, y_pred: NDArray) -> NDArray:
             f"Number of observations in `y_true` and `y_pred` should match,\
                 got {y_true.shape[0]} and {y_pred.shape[0]}"
         )
-    if not y_pred.ndim in [1, 2, 3]:
+    if y_pred.ndim not in [1, 2, 3]:
         raise ValueError(
             f"`y_pred` should have rank 1, 2, or 3, has rank {y_pred.ndim}"
         )
@@ -69,7 +69,7 @@ def aggregate_preds(y_pred: NDArray) -> tuple[NDArray, NDArray, NDArray]:
         Stack (rank 2 or 3), mean (rank 2), and label (rank 1) of predictions.
     """
     # checks
-    if not y_pred.ndim in [2, 3]:
+    if y_pred.ndim not in [2, 3]:
         raise ValueError(f"`y_pred` should have rank 2 or 3, has rank {y_pred.ndim}")
     # only take mean if multiple samples
     if y_pred.ndim == 3:
@@ -100,7 +100,8 @@ def generate_synthetic_output(
 
     Returns
     -------
-    Union[tuple[NDArray, NDArray], tuple[tuple[NDArray, NDArray], tuple[NDArray, NDArray]]]
+    Union[tuple[NDArray, NDArray], tuple[tuple[NDArray, NDArray],
+    tuple[NDArray, NDArray]]]
         Tuple of synthetic predictions and true labels.
     """
     NUM_CLASSES = 10
