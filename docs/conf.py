@@ -6,9 +6,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = u"reject"
-copyright = u"2024, Arthur Thuy"
-author = u"Arthur Thuy"
+project = "reject"
+copyright = "2024, Arthur Thuy"
+author = "Arthur Thuy"
 
 # -- General configuration ---------------------------------------------------
 
@@ -17,16 +17,14 @@ author = u"Arthur Thuy"
 # ones.
 extensions = [
     "myst_nb",
-    'sphinx.ext.autodoc',
+    "sphinx.ext.autodoc",
     "autoapi.extension",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
 ]
 autoapi_dirs = ["../reject"]
 
-myst_enable_extensions = [
-    "dollarmath"
-]
+myst_enable_extensions = ["dollarmath"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

@@ -15,8 +15,9 @@ from scipy.stats import entropy
 from reject.utils import aggregate_preds
 from reject.constant import ENTROPY_UNC_LIST, EntropyUnc
 
+
 def compute_uncertainty(
-      y_pred: NDArray, unc_type: Optional[EntropyUnc] = None  
+    y_pred: NDArray, unc_type: Optional[EntropyUnc] = None
 ) -> Union[NDArray, dict[str, NDArray]]:
     """Calculate total uncertainty (TU), aleatoric uncertainty (AU) and epistemic uncertainty (EU).
 

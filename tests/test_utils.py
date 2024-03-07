@@ -72,8 +72,16 @@ class TestComputeCorrect:
     @pytest.mark.parametrize(
         "y_pred_label, y_true_label, is_correct",
         [
-            (np.array([0.0, 0.0, 1.0, 0.0, 0.0]), np.array([0.0, 1.0, 1.0, 0.0, 1.0]), np.array([True, False, True, True, False])),
-            (np.array([0.0, 0.0, 1.0, 0.0, 0.0]), np.array([1.0, 1.0, 1.0, 0.0, 1.0]), np.array([False, False, True, True, False])),
+            (
+                np.array([0.0, 0.0, 1.0, 0.0, 0.0]),
+                np.array([0.0, 1.0, 1.0, 0.0, 1.0]),
+                np.array([True, False, True, True, False]),
+            ),
+            (
+                np.array([0.0, 0.0, 1.0, 0.0, 0.0]),
+                np.array([1.0, 1.0, 1.0, 0.0, 1.0]),
+                np.array([False, False, True, True, False]),
+            ),
         ],
     )
     def test_unit(self, y_pred_label, y_true_label, is_correct):
@@ -83,9 +91,9 @@ class TestComputeCorrect:
     def test_error(self):
         with pytest.raises(ValueError):
             compute_correct(np.zeros((3,)), np.zeros((4,)))
-            
-        with pytest.raises(ValueError):
-            compute_correct(np.zeros((3, 3)), np.zeros((3,)))   
 
         with pytest.raises(ValueError):
-             compute_correct(np.zeros((3,)), np.zeros((3,3,3,3)))
+            compute_correct(np.zeros((3, 3)), np.zeros((3,)))
+
+        with pytest.raises(ValueError):
+            compute_correct(np.zeros((3,)), np.zeros((3, 3, 3, 3)))

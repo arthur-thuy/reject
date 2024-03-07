@@ -62,7 +62,7 @@ def aggregate_preds(y_pred: NDArray) -> tuple[NDArray, NDArray, NDArray]:
     y_pred : NDArray
         Array of predictions. Shape (n_observations, n_classes)\
               or (n_observations, n_samples, n_classes).
-              
+
     Returns
     -------
     tuple[NDArray, NDArray, NDArray]

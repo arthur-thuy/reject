@@ -8,8 +8,8 @@
 <a href='https://reject.readthedocs.io/en/latest/'>
         <img src='https://img.shields.io/readthedocs/reject' alt='Documentation Status' />
     </a>
-<a href="https://app.codecov.io/gh/arthur-thuy/reject" > 
- <img src="https://codecov.io/gh/arthur-thuy/reject/graph/badge.svg?token=wYnaStSR3z"/> 
+<a href="https://app.codecov.io/gh/arthur-thuy/reject" >
+ <img src="https://codecov.io/gh/arthur-thuy/reject/graph/badge.svg?token=wYnaStSR3z"/>
  </a>
 <a href="https://github.com/psf/black">
         <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">

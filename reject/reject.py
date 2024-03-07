@@ -161,7 +161,7 @@ def compute_metrics(
         Rejection quality (RQ).
     pred_reject : ndarray
         Array of True/False indicators to reject predictions.
-        
+
     Notes
     -----
     - rejection quality is undefined when `n_cor_rej=0`
@@ -316,7 +316,10 @@ class ClassificationRejector:
         if unc_type == "confidence":
             xlim = (0 - 0.05, 1 + 0.05)
         else:
-            xlim = (0 - 0.05 * self.max_entropy, self.max_entropy + 0.05 * self.max_entropy)
+            xlim = (
+                0 - 0.05 * self.max_entropy,
+                self.max_entropy + 0.05 * self.max_entropy,
+            )
 
         # draw plot
         if unc_type is not None:
@@ -512,7 +515,11 @@ class ClassificationRejector:
                 correct=self.correct,
                 unc_ary=unc_ary,
                 metric=metric,
-                unc_type=GeneralUnc.CONFIDENCE if unc_type == "confidence" else GeneralUnc.ENTROPY,
+                unc_type=(
+                    GeneralUnc.CONFIDENCE
+                    if unc_type == "confidence"
+                    else GeneralUnc.ENTROPY
+                ),
                 relative=relative,
                 space_start=space_start,
                 space_stop=space_stop,
@@ -576,7 +583,11 @@ class ClassificationRejector:
                 correct=self.correct,
                 unc_ary=unc_ary,
                 metric=label,
-                unc_type=GeneralUnc.CONFIDENCE if unc_type == "confidence" else GeneralUnc.ENTROPY,
+                unc_type=(
+                    GeneralUnc.CONFIDENCE
+                    if unc_type == "confidence"
+                    else GeneralUnc.ENTROPY
+                ),
                 relative=relative,
                 space_start=space_start,
                 space_stop=space_stop,
@@ -695,5 +706,7 @@ class ClassificationRejector:
         if not relative and unc_type == "entropy":
             # invert x-axis, largest uncertainty values on the left
             ax.invert_xaxis()
-            ax.set_xlim(self.max_entropy + 0.05 * self.max_entropy, 0 - 0.05 * self.max_entropy)
+            ax.set_xlim(
+                self.max_entropy + 0.05 * self.max_entropy, 0 - 0.05 * self.max_entropy
+            )
         return ax
