@@ -6,7 +6,7 @@
 """Module for rejection."""
 # =============================================================================
 
-from typing import Literal, Optional, Union
+from typing import Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -35,7 +35,8 @@ def confusion_matrix(
     show: bool = False,
     seed: int = 44,
 ) -> tuple[tuple[int, int, int, int], NDArray]:
-    """Compute confusion matrix with 2 axes: (i) correct/incorrect, (ii) rejected/non-rejected.
+    """Compute confusion matrix with 2 axes:
+    (i) correct/incorrect, (ii) rejected/non-rejected.
 
     Parameters
     ----------
@@ -94,8 +95,8 @@ def confusion_matrix(
     else:
         # absolute rejection
         pred_reject = np.where(unc_ary >= threshold, True, False)
-        idx_rej = np.where(pred_reject == True)[0]
-        idx_nonrej = np.where(pred_reject == False)[0]
+        idx_rej = np.where(pred_reject is True)[0]
+        idx_nonrej = np.where(pred_reject is False)[0]
 
     # intersections
     idx_cor_rej = np.intersect1d(idx_correct, idx_rej)
@@ -261,7 +262,8 @@ class ClassificationRejector:
         Parameters
         ----------
         unc_type : Optional[AllUnc], optional
-            Uncertainty type to return. If None, dict of TU, AU, and EU is returned. By default None
+            Uncertainty type to return. If None, dict of TU, AU, and EU is returned.
+            By default None
 
         Returns
         -------
@@ -276,7 +278,8 @@ class ClassificationRejector:
         # checks
         if unc_type is not None and unc_type not in ALL_UNC_LIST:
             raise ValueError(
-                "Invalid uncertainty type. Expected one of: TU, AU, EU, confidence or None"
+                "Invalid uncertainty type."
+                " Expected one of: TU, AU, EU, confidence or None"
             )
 
         if unc_type == "confidence":
@@ -296,7 +299,8 @@ class ClassificationRejector:
         Parameters
         ----------
         unc_type : Optional[AllUnc], optional
-            Uncertainty type to return. If None, dict of TU, AU, and EU is returned. By default None
+            Uncertainty type to return. If None, dict of TU, AU, and EU is returned.
+            By default None
 
         Returns
         -------
@@ -311,7 +315,8 @@ class ClassificationRejector:
         # checks
         if unc_type is not None and unc_type not in ALL_UNC_LIST:
             raise ValueError(
-                "Invalid uncertainty type. Expected one of: TU, AU, EU, confidence or None"
+                "Invalid uncertainty type."
+                " Expected one of: TU, AU, EU, confidence or None"
             )
         if unc_type == "confidence":
             xlim = (0 - 0.05, 1 + 0.05)
@@ -353,7 +358,8 @@ class ClassificationRejector:
         unc_type : AllUnc
             Uncertainty type to use for rejection order.
         relative : bool, optional
-            Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
+            Reject relative to the amount of observations, otherwise compare to the
+            uncertainty value. By default True
         show : bool, optional
             Print confusion matrix and metrics, by default False
 
@@ -371,7 +377,8 @@ class ClassificationRejector:
         unc_ary = (
             self.confidence if unc_type == "confidence" else self._uncertainty[unc_type]
         )
-        # NOTE: mypy think is can return tuple[float, float, float] but not true because `return_bool=True`
+        # NOTE: mypy think is can return tuple[float, float, float]
+        # but not true because `return_bool=True`
         return compute_metrics(  # type: ignore[return-value]
             threshold=threshold,
             correct=self.correct,
@@ -393,17 +400,21 @@ class ClassificationRejector:
         filename: Optional[str] = None,
         **save_args
     ) -> plt.Figure:
-        """Plot one or multiple rejection metrics for a range of thresholds, based on one or more uncertainty types.\
+        """Plot one or multiple rejection metrics for a range of thresholds,
+         based on one or more uncertainty types.\
         There should be at least one of `unc_type` or `metric` specified.
 
         Parameters
         ----------
-        unc_type : Optional[AllUnc], optional # TODO: update to AllUnc
-            Uncertainty type to use for rejection order. If None, 3 panels with TU, AU, and EU are plotted. By default None
+        unc_type : Optional[AllUnc], optional
+            Uncertainty type to use for rejection order. If None, 3 panels with
+            TU, AU, and EU are plotted. By default None
         metric : Optional[Metric], optional
-            Rejection metrics to compute. If None, 3 panels with NRA, CQ, and RQ are plotted. By default None
+            Rejection metrics to compute. If None, 3 panels with NRA, CQ, and RQ
+            are plotted. By default None
         relative : bool, optional
-            Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
+            Reject relative to the amount of observations, otherwise compare to
+            the uncertainty value. By default True
         space_start : float, optional
             Threshold value to start figure at, by default 0.001
         space_stop : float, optional
@@ -428,7 +439,8 @@ class ClassificationRejector:
         # checks
         if unc_type is None and metric is None:
             raise ValueError(
-                "`unc_type` and `metric` cannot be both None, at least one must be specified."
+                "`unc_type` and `metric` cannot be both None, at least one must"
+                " be specified."
             )
         if unc_type is not None and unc_type not in ALL_UNC_LIST:
             raise ValueError(
@@ -476,9 +488,11 @@ class ClassificationRejector:
         metric : Metric
             Rejection metrics to compute.
         unc_type : Optional[AllUnc], optional
-            Uncertainty type to use for rejection order. If None, 3 panels with TU, AU, and EU are plotted. By default None
+            Uncertainty type to use for rejection order. If None, 3 panels with
+            TU, AU, and EU are plotted. By default None
         relative : bool, optional
-            Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
+            Reject relative to the amount of observations, otherwise compare to
+            the uncertainty value. By default True
         space_start : float, optional
             Threshold value to start figure at, by default 0.001
         space_stop : float, optional
@@ -554,7 +568,8 @@ class ClassificationRejector:
         unc_type : AllUnc
             Uncertainty type to use for rejection order.
         relative : bool, optional
-            Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
+            Reject relative to the amount of observations, otherwise compare to
+            the uncertainty value. By default True
         space_start : float, optional
             Threshold value to start figure at, by default 0.001
         space_stop : float, optional
@@ -630,7 +645,8 @@ class ClassificationRejector:
         unc_type : GeneralUnc
             Uncertainty type to use for rejection order.
         relative : bool, optional
-            Reject relative to the amount of observations, otherwise compare to the uncertainty value. By default True
+            Reject relative to the amount of observations, otherwise compare to
+            the uncertainty value. By default True
         space_start : float, optional
             Threshold value to start figure at, by default 0.001
         space_stop : float, optional

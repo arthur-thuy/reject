@@ -67,8 +67,8 @@ def _dq_divide(numerator, denominator, zero_division="warn"):
 def _warn_dq(result_size):
     """Warns about ill-defined DQ-score."""
     msg = (
-        "DQ-score ill-defined and being set to 0.0 {0} "
-        "ID diversity of 1.0 and OOD diversity of 0.0. Use `zero_division` parameter to control"
+        "DQ-score ill-defined and being set to 0.0 {0} ID diversity of 1.0 and OOD"
+        " diversity of 0.0. Use `zero_division` parameter to control"
         " this behavior.".format("due to" if result_size == 1 else "in samples with")
     )
     warnings.warn(msg, UndefinedMetricWarning, stacklevel=2)
@@ -224,9 +224,8 @@ def diversity_quality_score(
     """
     if zero_division not in ["warn", 0.0, np.nan]:
         raise ValueError(
-            "Invalid zero_division value. Expected one of {{'warn', 0.0, np.nan}}, got {0}".format(
-                zero_division
-            )
+            "Invalid zero_division value. Expected one of {{'warn', 0.0, np.nan}},"
+            " got {0}".format(zero_division)
         )
     y_pred_id = _input_array(y_pred_id)
     y_pred_ood = _input_array(y_pred_ood)
