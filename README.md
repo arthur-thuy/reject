@@ -62,4 +62,4 @@ print(fig)
 
 <img src="https://github.com/arthur-thuy/reject/assets/57416568/6a59f37a-0f2f-4a2c-96d8-8690b8e19df7" height="200"/>
 
-An example notebook is provided, which can be found in the ["Example usage" section](https://reject.readthedocs.io/en/latest/example.html) of the documentation.
+User guide notebooks are provided in the [reject.readthedocs.io](http://reject.readthedocs.io/) documentation.

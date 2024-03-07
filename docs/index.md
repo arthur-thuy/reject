@@ -33,7 +33,7 @@ autoapi/index
 
 ```{toctree}
 :maxdepth: 1
-:caption: User guide
+:caption: User Guide
 
 guide/classification_rejection.ipynb
 guide/diversity_quality_score.ipynb
