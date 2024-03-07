@@ -42,7 +42,7 @@ If you are proposing a feature:
 
 Ready to contribute? Here's how to set up `reject` for local development.
 
-1. Download a copy of `reject` locally.
+1. Clone the `reject` repository locally.
 2. Install `reject` using `poetry`:
 
     ```console
@@ -59,6 +59,30 @@ Ready to contribute? Here's how to set up `reject` for local development.
 
 5. Commit your changes and open a pull request.
 
+## Pre-commit hooks
+
+A handful of [pre-commit](https://pre-commit.com) hooks are provided, and ensuring their checks pass pass is highly recommended as they are later ran as part of CI checks that will block PRs.
+
+These hooks include:
+
+* Trailing whitespace trimming.
+* Ensure EOF newline.
+* Code formatting ([black](https://github.com/psf/black)).
+* PEP8 linting ([flake8](https://github.com/pycqa/flake8)).
+* Import sorting ([isort](https://github.com/PyCQA/isort)).
+
+All *pre-commit* hooks can be installed with:
+
+```shell
+pre-commit install
+```
+
+Alternatively, all of the aforementioned tools are installed with the *dev* dependency group and can ran individually, without *pre-commit* hooks. For example, to format files with *black*:
+
+```shell
+poetry run black reject/
+```
+
 ## Pull Request Guidelines
 
 Before you submit a pull request, check that it meets these guidelines:
@@ -66,8 +90,3 @@ Before you submit a pull request, check that it meets these guidelines:
 1. The pull request should include additional tests if appropriate.
 2. If the pull request adds functionality, the docs should be updated.
 3. The pull request should work for all currently supported operating systems and versions of Python.
-
-## Code of Conduct
-
-Please note that the `reject` project is released with a
-Code of Conduct. By contributing to this project you agree to abide by its terms.
