@@ -6,25 +6,25 @@
 """Module for rejection."""
 # =============================================================================
 
-from typing import Optional, Union, Literal
+from typing import Literal, Optional, Union
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from numpy.typing import NDArray
 from tabulate import tabulate
 
-from reject.uncertainty import compute_uncertainty, compute_confidence
-from reject.utils import compute_correct
 from reject.constant import (
     ALL_UNC_LIST,
-    METRICS_DICT,
     ENTROPY_UNC_LIST,
     GENERAL_UNC_LIST,
+    METRICS_DICT,
     UNCERTAINTIES_DICT,
     AllUnc,
     GeneralUnc,
     Metric,
 )
+from reject.uncertainty import compute_confidence, compute_uncertainty
+from reject.utils import compute_correct
 
 
 def confusion_matrix(

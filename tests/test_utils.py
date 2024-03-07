@@ -7,10 +7,10 @@
 # =============================================================================
 # NOTE: run with `poetry run pytest tests/`
 
-import pytest
 import numpy as np
+import pytest
 
-from reject.utils import generate_synthetic_output, aggregate_preds, compute_correct
+from reject.utils import aggregate_preds, compute_correct, generate_synthetic_output
 
 
 @pytest.fixture

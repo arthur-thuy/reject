@@ -7,10 +7,11 @@
 # =============================================================================
 # NOTE: run with `poetry run pytest tests/`
 
-import pytest
-import numpy as np
 import matplotlib.pyplot as plt
-from reject.reject import ClassificationRejector, confusion_matrix, compute_metrics
+import numpy as np
+import pytest
+
+from reject.reject import ClassificationRejector, compute_metrics, confusion_matrix
 
 
 @pytest.fixture

@@ -6,14 +6,14 @@
 """Module for uncertainty."""
 # =============================================================================
 
-from typing import Optional, Union, Literal
+from typing import Literal, Optional, Union
 
 import numpy as np
 from numpy.typing import NDArray
 from scipy.stats import entropy
 
-from reject.utils import aggregate_preds
 from reject.constant import ENTROPY_UNC_LIST, EntropyUnc
+from reject.utils import aggregate_preds
 
 
 def compute_uncertainty(

@@ -8,19 +8,20 @@
 # NOTE: run with `poetry run pytest tests/`
 
 import warnings
+
 import numpy as np
 import pytest
 
 from reject.diversity import (
-    compute_pairwise_diversity,
-    _dq_divide,
-    diversity_quality_score,
-    diversity_score,
     UndefinedMetricWarning,
-    _input_array,
-    _warn_dq,
     _check_zero_division,
     _diversity_quality_score_base,
+    _dq_divide,
+    _input_array,
+    _warn_dq,
+    compute_pairwise_diversity,
+    diversity_quality_score,
+    diversity_score,
 )
 
 

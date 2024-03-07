@@ -10,7 +10,7 @@ import warnings
 from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray, ArrayLike
+from numpy.typing import ArrayLike, NDArray
 
 from reject.utils import aggregate_preds
 
