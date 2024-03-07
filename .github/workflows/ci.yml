@@ -17,6 +17,12 @@ jobs:
     - name: Check-out repository
       uses: actions/checkout@v4
 
+    - name: Black formatting
+      uses: psf/black@stable
+      with:
+        src: "./reject"
+        jupyter: true
+
     - name: Install poetry
       uses: snok/install-poetry@v1
 
