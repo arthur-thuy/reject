@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.1 (08/03/2024)
+
+- Add pre-commit hooks
+- Add GitHub actions
+- Remove seed from ClassifierRejector
+
 ## v0.3.0 (06/03/2024)
 
 - Add diversity metrics
