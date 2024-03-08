@@ -11,9 +11,7 @@
 <a href="https://app.codecov.io/gh/arthur-thuy/reject" >
  <img src="https://codecov.io/gh/arthur-thuy/reject/graph/badge.svg?token=wYnaStSR3z"/>
  </a>
-<a href="https://github.com/psf/black">
-        <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
-    </a>
+<a href="https://doi.org/10.5281/zenodo.10796210"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.10796210.svg" alt="DOI"></a>
 </p>
 
 `reject` is a Python library for _classification with rejection_. Neural networks are often confidently wrong when confronted with out-of-distribution data. When the prediction's uncertainty is too high, the model abstains from predicting and the observation is passed on to a human expert who takes the final decision. It is useful for applications where making an error can be more costly than asking a human expert for help.
