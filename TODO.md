@@ -10,7 +10,7 @@ Functionalities for classification with rejection.
 - [ ] Maybe add mypy to pre-commit hooks and add to CONTRIBUTING.md "* Static type checking ([mypy](https://github.com/python/mypy))."
 - [ ] Add CITATION.cff file
 - [ ] Use dependabot
-- [ ] Add DOI shield to README
+
 
 ### In Progress
 
@@ -26,3 +26,4 @@ Functionalities for classification with rejection.
 - [x] Which linters to use? Pylint, Flake8, black?
 - [x] Use pre-commit hooks (also see [example](https://airflow-dbt-python.readthedocs.io/en/latest/development.html#pre-commit-hooks))
 - [x] Update development page (see [example](https://airflow-dbt-python.readthedocs.io/en/latest/development.html))
+- [x] Add DOI shield to README
