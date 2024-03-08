@@ -3,7 +3,6 @@
 Functionalities for classification with rejection.
 
 ### Todo
-- [ ] Change sphinx theme
 - [ ] Inspect how sklearn creates plot ([here](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.PrecisionRecallDisplay.html#sklearn.metrics.PrecisionRecallDisplay.from_estimator))
 - [ ] Test code for a range of python versions
 - [ ] Maybe add flake8 to github actions
@@ -27,3 +26,5 @@ Functionalities for classification with rejection.
 - [x] Use pre-commit hooks (also see [example](https://airflow-dbt-python.readthedocs.io/en/latest/development.html#pre-commit-hooks))
 - [x] Update development page (see [example](https://airflow-dbt-python.readthedocs.io/en/latest/development.html))
 - [x] Add DOI shield to README
+- [x] Get better oneliner for repo description
+- [x] Add logo

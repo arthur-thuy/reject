@@ -1,4 +1,6 @@
-# reject
+<p align="center">
+<img src="https://github.com/arthur-thuy/uncertainty-rejection/assets/57416568/717f3052-f801-4fce-994b-dc045a328bd6" height="150">
+</p>
 
 <p align="center">
 <a href="https://pypi.org/project/reject/">
