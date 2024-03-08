@@ -8,6 +8,9 @@ Functionalities for classification with rejection.
 - [ ] Test code for a range of python versions
 - [ ] Maybe add flake8 to github actions
 - [ ] Maybe add mypy to pre-commit hooks and add to CONTRIBUTING.md "* Static type checking ([mypy](https://github.com/python/mypy))."
+- [ ] Add CITATION.cff file
+- [ ] Use dependabot
+- [ ] Add DOI shield to README
 
 ### In Progress
 
