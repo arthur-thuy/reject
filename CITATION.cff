@@ -1,0 +1,39 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Reject
+message: >-
+  If you use reject in your work, please cite it using the
+  following metadata
+type: software
+authors:
+  - given-names: Arthur
+    family-names: Thuy
+    email: arthur.thuy@ugent.be
+    affiliation: Ghent University
+    orcid: 'https://orcid.org/0000-0001-9107-5646'
+  - given-names: Dries
+    name-particle: F
+    family-names: Benoit
+    email: dries.benoit@ugent.be
+    affiliation: Ghent University
+    orcid: 'https://orcid.org/0000-0001-9901-8507'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.10796209
+    description: >-
+      The concept DOI for the collection containing all
+      versions of the Citation File Format.
+repository-code: 'https://github.com/arthur-thuy/reject'
+url: 'https://reject.readthedocs.io/en/latest/'
+abstract: Classification with rejection in Python
+keywords:
+  - python
+  - machine learning
+  - uncertainty
+  - diversity
+  - neural networks
+license: Apache-2.0
+version: 0.3.1
+date-released: '2024-03-08'
