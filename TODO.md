@@ -7,8 +7,9 @@ Functionalities for classification with rejection.
 - [ ] Test code for a range of python versions
 - [ ] Maybe add flake8 to github actions
 - [ ] Maybe add mypy to pre-commit hooks and add to CONTRIBUTING.md "* Static type checking ([mypy](https://github.com/python/mypy))."
-- [ ] Add CITATION.cff file
+
 - [ ] Use dependabot
+- [ ] Consider submitting to [the Journal of Open Source Software](https://joss.theoj.org/)
 
 
 ### In Progress
@@ -28,3 +29,4 @@ Functionalities for classification with rejection.
 - [x] Add DOI shield to README
 - [x] Get better oneliner for repo description
 - [x] Add logo
+- [x] Add CITATION.cff file
