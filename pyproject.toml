@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "reject"
 version = "0.3.1"
-description = "Functionalities for classification with rejection."
+description = "Classification with rejection in Python."
 authors = ["Arthur Thuy"]
 maintainers = ["Arthur Thuy <arthur.thuy@telenet.be>"]
 license = "Apache License 2.0"
