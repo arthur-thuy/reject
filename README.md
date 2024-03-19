@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/arthur-thuy/uncertainty-rejection/assets/57416568/717f3052-f801-4fce-994b-dc045a328bd6" height="100">
+<img src="https://github.com/arthur-thuy/reject/assets/57416568/0ccfdaba-b69e-419a-9bc9-c3e915b6a865" height="100">
 </p>
 
 <p align="center">
