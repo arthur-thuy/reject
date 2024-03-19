@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.2 (19/03/2024)
+
+- Update pypi description
+- Fix logo link in README.md
+
 ## v0.3.1 (08/03/2024)
 
 - Add pre-commit hooks
